@@ -1,1 +1,1 @@
-This is the playground version of the code where I try to make cool new things
+This is the tutorial version, following wesbos make an instagram/twitter scrapper
