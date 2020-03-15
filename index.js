@@ -1,15 +1,26 @@
-import { getHTML, getTwitterFollowers, getInstagramFollowers } from './lib/scrapper';
-// const getHTML = require('./lib/scrapper');
+import express from 'express';
 
-async function go(username) {
-    const tPromise = getHTML(`https://twitter.com/${username}`);
-    const iPromise = getHTML(`https://www.instagram.com/${username}/`)
+import FileSync from 'lowdb/adapters/FileSync'; 
 
-    const [twitterHTML, instagramHTML] = await Promise.all([tPromise, iPromise])
+import { getTwitterCount, getInstagramCount} from './lib/scrapper';
+import db from './lib/db';
 
-    const twitterFollowers = await getTwitterFollowers(twitterHTML);
-    const instagramFollowers = await getInstagramFollowers(instagramHTML);
-    console.log(`You have ${twitterFollowers} Twitter Followers and ${instagramFollowers} Instagram Followers!`);
-}
+import './lib/cron';
 
-go('hardytack');
+const app = express();
+
+console.log(db);
+
+app.get('/scrape', async (req, res, next) => {
+    console.log('scraping!');
+    const [instagramFollowers, twitterFollowers] = await Promise.all([
+        getInstagramCount('hardytack'), 
+        getTwitterCount('hardytack')
+    ]);
+    res.json({instagramFollowers, twitterFollowers});
+})
+
+
+app.listen(1994, (deets) => {
+    console.log(`server started on port 1994`)
+})
