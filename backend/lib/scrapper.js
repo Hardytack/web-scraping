@@ -39,8 +39,8 @@ export async function getInstagramCount(username) {
 export async function runCron() {
     console.log('scraping!');
     const [instagramFollowers, twitterFollowers] = await Promise.all([
-        getInstagramCount('hardytack'), 
-        getTwitterCount('hardytack')
+        getInstagramCount('pokemon'), 
+        getTwitterCount('pokemon')
     ]);
     db.get('twitter').push({
         date: Date.now(), 

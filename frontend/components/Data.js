@@ -1,22 +1,18 @@
 import {useContext} from 'react'
 import {ScrapeContext} from './ScrapeContext';
-import {formatDistanceToNow} from 'date-fns';
+
+import Table from './Table';
+import Chart from './Chart';
 
 export default function Data() {
-    const {scrapes} = useContext(ScrapeContext);
+    const {scrapes, fetchScrapes} = useContext(ScrapeContext);
     return <div>
-        <h2>Data: </h2>
-        <ul>
-            {scrapes.twitter.map(scrape => {
-                return<li key={scrape.count}>{scrape.count}</li>
-            })}
-        </ul>
-        <h3>{scrapes.twitter.length}</h3>
-        <ul>
-            {scrapes.instagram.map(scrape => {
-                return<li key={scrape.count}>{scrape.count} - {formatDistanceToNow(new Date(scrape.date), {addSuffix: true})}</li>
-            })}
-        </ul>
-        <h3>{scrapes.instagram.length}</h3>
+        <button onClick={fetchScrapes}>Refresh Data</button>
+        <h2>Twitter</h2>
+        <Chart  scrapes={scrapes.twitter}/>
+        <Table scrapes={scrapes.twitter} />
+        <h2>Instagram</h2>
+        <Chart  scrapes={scrapes.instagram}/>
+        <Table scrapes={scrapes.instagram} />
     </div>
 }
