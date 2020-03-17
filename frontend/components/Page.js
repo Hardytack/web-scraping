@@ -9,7 +9,7 @@ function useScrapes() {
     //Fetch function
     async function fetchScrapes() {
         console.log('Fetching...')
-        const res = await fetch('http://localhost:1994/data');
+        const res = await fetch('http://localhost:1994/aggregate');
         const data = await res.json();
         setScrapes(data);
     }

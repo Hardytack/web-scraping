@@ -5,6 +5,7 @@ import FileSync from 'lowdb/adapters/FileSync';
 
 import { getTwitterCount, getInstagramCount} from './lib/scrapper';
 import { uniqueCount } from './lib/utils';
+import {aggregate} from './lib/aggregate'
 import db from './lib/db';
 
 import './lib/cron';
@@ -32,6 +33,18 @@ app.get('/data', async (req, res, next) => {
     res.json({ twitter: uniqueTwitter, instagram: uniqueInstagram});
 })
 
+
+app.get('/aggregate', async (req, res, next) => {
+    //get the scrape data
+    const { twitter, instagram } = db.value();
+
+    //need to aggregate values
+    const aggTwitter = aggregate(twitter);
+    const aggInstagram = aggregate(instagram);
+    
+    //respond with json
+    res.json({ twitter: aggTwitter, instagram: aggInstagram});
+})
 
 app.listen(1994, () => {
     console.log(`server started on port 1994`)
